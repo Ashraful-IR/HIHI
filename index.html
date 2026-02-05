@@ -102,6 +102,34 @@
             z-index: 1000;
         }
 
+        .angry-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            z-index: 1000;
+            animation: shake 0.5s;
+        }
+
+        body.angry-mode {
+            background: linear-gradient(135deg, #ff0000, #cc0000) !important;
+        }
+
+        body.angry-mode .container {
+            display: none;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(-50%, -50%) rotateZ(0deg); }
+            25% { transform: translate(-50%, -50%) rotateZ(-5deg); }
+            75% { transform: translate(-50%, -50%) rotateZ(5deg); }
+        }
+
         /* Responsive Design for Tablets */
         @media (max-width: 768px) {
             .container {
@@ -190,6 +218,10 @@
 
     <div class="celebration" id="celebration">💕</div>
     <div class="success-message" id="successMessage">Love You! 🎉❤️</div>
+    <div class="angry-message" id="angryMessage1">Don't you love me? 😠</div>
+    <div class="angry-message" id="angryMessage2">Really? Still No? 😤</div>
+    <div class="angry-message" id="angryMessage3">You're breaking my heart! 💔</div>
+    <div class="angry-message" id="angryMessage4">Please say Yes! 😞</div>
 
     <script>
         const noBtn = document.getElementById('noBtn');
@@ -198,7 +230,9 @@
         const successMessage = document.getElementById('successMessage');
 
         // Function to move the "No" button away
+        let noButtonMoveCount = 0;
         function moveNoButton() {
+            noButtonMoveCount++;
             const randomX = Math.random() * (window.innerWidth - 150);
             const randomY = Math.random() * (window.innerHeight - 100);
             
@@ -207,6 +241,21 @@
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
             noBtn.style.zIndex = '10';
+            
+            // Show angry message after 4 moves
+            if (noButtonMoveCount % 4 === 0 && noButtonMoveCount > 0) {
+                const messageIndex = (noButtonMoveCount / 4 - 1) % 4;
+                const messageIds = ['angryMessage1', 'angryMessage2', 'angryMessage3', 'angryMessage4'];
+                const currentMessageId = messageIds[messageIndex];
+                const angryMessage = document.getElementById(currentMessageId);
+                const body = document.body;
+                angryMessage.style.display = 'block';
+                body.classList.add('angry-mode');
+                setTimeout(() => {
+                    angryMessage.style.display = 'none';
+                    body.classList.remove('angry-mode');
+                }, 3000);
+            }
         }
 
         // Make the "No" button run away from cursor
