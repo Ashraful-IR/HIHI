@@ -197,16 +197,26 @@
         const celebration = document.getElementById('celebration');
         const successMessage = document.getElementById('successMessage');
 
-        // Make the "No" button run away from cursor
-        noBtn.addEventListener('mouseover', function(e) {
+        // Function to move the "No" button away
+        function moveNoButton() {
             const randomX = Math.random() * (window.innerWidth - 150);
             const randomY = Math.random() * (window.innerHeight - 100);
             
             noBtn.style.position = 'fixed';
+            noBtn.style.transition = 'all 0.3s ease';
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
             noBtn.style.zIndex = '10';
-        });
+        }
+
+        // Make the "No" button run away from cursor
+        noBtn.addEventListener('mouseover', moveNoButton);
+        
+        // Add touch support for mobile users
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveNoButton();
+        }, { passive: false });
 
         // "Yes" button click handler
         yesBtn.addEventListener('click', function() {
