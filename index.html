@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .question {
+            font-size: 48px;
+            color: #ff1493;
+            margin-bottom: 60px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            position: relative;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #yesBtn {
+            background-color: #ff69b4;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            background-color: #ff1493;
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
+        }
+
+        #noBtn {
+            background-color: #808080;
+            color: white;
+            position: relative;
+        }
+
+        #noBtn:hover {
+            background-color: #606060;
+        }
+
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -70%) scale(1.2); }
+        }
+
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            color: #ebe6e9;
+            font-weight: bold;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        /* Responsive Design for Tablets */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .question {
+                font-size: 36px;
+                margin-bottom: 40px;
+            }
+
+            .button-container {
+                gap: 20px;
+            }
+
+            button {
+                padding: 12px 30px;
+                font-size: 18px;
+            }
+
+            .success-message {
+                font-size: 36px;
+            }
+        }
+
+        /* Responsive Design for Mobile Devices */
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .question {
+                font-size: 28px;
+                margin-bottom: 35px;
+                letter-spacing: 0.5px;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            button {
+                padding: 12px 25px;
+                font-size: 16px;
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto;
+            }
+
+            .success-message {
+                font-size: 28px;
+                padding: 20px;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 320px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .question {
+                font-size: 22px;
+                margin-bottom: 25px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="question">Will you be my valentine? ❤️</div>
+        <div class="button-container">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div class="celebration" id="celebration">💕</div>
+    <div class="success-message" id="successMessage">Love You! 🎉❤️</div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const celebration = document.getElementById('celebration');
+        const successMessage = document.getElementById('successMessage');
+
+        // Make the "No" button run away from cursor
+        noBtn.addEventListener('mouseover', function(e) {
+            const randomX = Math.random() * (window.innerWidth - 150);
+            const randomY = Math.random() * (window.innerHeight - 100);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.zIndex = '10';
+        });
+
+        // "Yes" button click handler
+        yesBtn.addEventListener('click', function() {
+            container.style.display = 'none';
+            successMessage.style.display = 'block';
+            celebration.style.display = 'block';
+            
+            // Create confetti effect
+            createConfetti();
+        });
+
+        // Create confetti animation
+        function createConfetti() {
+            const confettiPieces = 50;
+            const colors = ['#ff69b4', '#ff1493', '#ff6b9d', '#c44569'];
+            
+            for (let i = 0; i < confettiPieces; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = '-10px';
+                confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.fontSize = Math.random() * 20 + 10 + 'px';
+                confetti.style.zIndex = '999';
+                confetti.textContent = '❤️';
+                confetti.style.pointerEvents = 'none';
+                
+                document.body.appendChild(confetti);
+                
+                let yPos = -10;
+                const xPos = parseFloat(confetti.style.left);
+                const duration = Math.random() * 3 + 2;
+                const startTime = Date.now();
+                
+                function animate() {
+                    const elapsed = (Date.now() - startTime) / 1000;
+                    yPos = elapsed * (window.innerHeight + 100) / duration;
+                    confetti.style.top = yPos + 'px';
+                    confetti.style.opacity = 1 - (elapsed / duration);
+                    
+                    if (yPos < window.innerHeight + 100) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        confetti.remove();
+                    }
+                }
+                animate();
+            }
+        }
+
+        const container = document.querySelector('.container');
+    </script>
+</body>
+</html>
